@@ -1,1 +1,645 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Vocabulary Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e6f0ff, #d1e7ff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: linear-gradient(to right, #0088cc, #00aaff);
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0088cc;
+            font-weight: bold;
+        }
+        
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            flex-grow: 1;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-title {
+            font-size: 1.8rem;
+            color: #0088cc;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .login-btn {
+            background: linear-gradient(to right, #0088cc, #00aaff);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .login-error {
+            color: #ff3333;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            padding: 15px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #0088cc;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .chat-name {
+            font-weight: 600;
+        }
+        
+        .messages-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f9f9f9;
+        }
+        
+        .message {
+            max-width: 70%;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            position: relative;
+        }
+        
+        .received {
+            background: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sent {
+            background: #dcf8c6;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .word-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .word-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .word-text {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .word-translation {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .pronunciation {
+            color: #0088cc;
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .example-sentence {
+            font-size: 0.9rem;
+            color: #444;
+            padding: 8px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .input-container {
+            display: flex;
+            padding: 10px;
+            background: #f5f5f5;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .message-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+        
+        .send-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .mic-btn {
+            background: #f5f5f5;
+            color: #0088cc;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .mic-btn.recording {
+            background: #ff3333;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .next-word-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            align-self: center;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .message {
+                max-width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="login-screen">
+            <div class="login-box">
+                <h2 class="login-title">Vocabulary Chat</h2>
+                <input type="text" id="username" class="login-input" placeholder="Логин">
+                <input type="password" id="password" class="login-input" placeholder="Парол">
+                <button class="login-btn" id="login-btn">Даромадан</button>
+                <div class="login-error" id="login-error">Логин ё парол нодуруст аст!</div>
+            </div>
+        </div>
+        
+        <!-- Chat Container -->
+        <div class="chat-container" id="chat-container" style="display: none;">
+            <div class="chat-header">
+                <div class="chat-avatar" id="partner-avatar">T</div>
+                <div class="chat-name" id="partner-name">Vocabulary Partner</div>
+            </div>
+            
+            <div class="messages-container" id="messages-container">
+                <!-- Messages will be added here dynamically -->
+            </div>
+            
+            <div class="input-container">
+                <button class="mic-btn" id="mic-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                </button>
+                <input type="text" class="message-input" id="message-input" placeholder="Нависед...">
+                <button class="send-btn" id="send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // Vocabulary data with images, pronunciation, and example sentences
+        const vocabulary = [
+            {
+                tajik: "дари даврзананда",
+                english: "revolving door",
+                russian: "вращающаяся дверь",
+                pronunciation: "[rɪˈvɒlvɪŋ dɔː]",
+                example: "He spun the revolving door round and round",
+                image: "https://images.unsplash.com/photo-1600585152220-90363fe7e115"
+            },
+            {
+                tajik: "системаи хамроҳии дарёгардӣ",
+                english: "satellite navigation",
+                russian: "спутниковая система навигации",
+                pronunciation: "[ˈsætəlaɪt ˌnævɪˈɡeɪʃən]",
+                example: "Satellite navigation is incredibly hard to learn.",
+                image: "https://images.unsplash.com/photo-1563784462041-5f97ac9523dd"
+            },
+            {
+                tajik: "силитсий",
+                english: "silicon",
+                russian: "кремний",
+                pronunciation: "[ˈsɪlɪkən]",
+                example: "Silicon and oxygen are the fundamental constituents of rocks in the earth's crust.",
+                image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb"
+            },
+            {
+                tajik: "скейтбордбозӣ",
+                english: "skateboarding",
+                russian: "катание на роликовой доске",
+                pronunciation: "[ˈskeɪtbɔːdɪŋ]",
+                example: "Skateboarding first came in during the early 1980s.",
+                image: "https://images.unsplash.com/photo-1572776685600-3f38c1a7c57d"
+            },
+            {
+                tajik: "фазо, уфуқ",
+                english: "skyline",
+                russian: "горизонт",
+                pronunciation: "[ˈskaɪlaɪn]",
+                example: "Clouds of smoke floated over the skyline.",
+                image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df"
+            },
+            {
+                tajik: "вақт",
+                english: "span",
+                russian: "пядь",
+                pronunciation: "[spæn]",
+                example: "The bridge has a span of 100 metres.",
+                image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35"
+            },
+            {
+                tajik: "муҷассама, ҳайкал",
+                english: "statue",
+                russian: "статуя",
+                pronunciation: "[ˈstætʃuː]",
+                example: "This statue is made of bronze.",
+                image: "https://images.unsplash.com/photo-1604176354204-9268737828e4"
+            },
+            {
+                tajik: "часпак",
+                english: "sticky",
+                russian: "клейкий",
+                pronunciation: "[ˈstɪki]",
+                example: "If the dough is sticky, add more flour.",
+                image: "https://images.unsplash.com/photo-1606787366850-de6330128bfc"
+            },
+            {
+                tajik: "нигоҳдорӣ, муҳофизат",
+                english: "storage",
+                russian: "сохранение",
+                pronunciation: "[ˈstɔːrɪdʒ]",
+                example: "We need more storage now.",
+                image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df"
+            },
+            {
+                tajik: "таъмин кардан",
+                english: "supply",
+                russian: "снабжать",
+                pronunciation: "[səˈplaɪ]",
+                example: "We can supply the goods from our main store.",
+                image: "https://images.unsplash.com/photo-1606787366850-de6330128bfc"
+            }
+        ];
+
+        // DOM elements
+        const loginScreen = document.getElementById('login-screen');
+        const chatContainer = document.getElementById('chat-container');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('login-btn');
+        const loginError = document.getElementById('login-error');
+        const messagesContainer = document.getElementById('messages-container');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const micBtn = document.getElementById('mic-btn');
+        const partnerName = document.getElementById('partner-name');
+        const partnerAvatar = document.getElementById('partner-avatar');
+
+        // State variables
+        let currentUser = null;
+        let currentWordIndex = 0;
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        // Login functionality
+        function login() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            if (!username || !password) {
+                loginError.textContent = "Лутфан ҳамаи майдонҳоро пур кунед!";
+                loginError.style.display = 'block';
+                return;
+            }
+            
+            // Simple login - in a real app, this would check against a database
+            currentUser = username;
+            loginScreen.style.display = 'none';
+            chatContainer.style.display = 'flex';
+            
+            // Set user's first initial in avatar
+            partnerAvatar.textContent = username.charAt(0).toUpperCase();
+            partnerName.textContent = username;
+            
+            // Start the vocabulary practice
+            showNextWord();
+        }
+        
+        // Show the next vocabulary word in the chat
+        function showNextWord() {
+            if (currentWordIndex >= vocabulary.length) {
+                currentWordIndex = 0; // Loop back to start
+            }
+            
+            const word = vocabulary[currentWordIndex];
+            
+            // Create word card
+            const wordCard = document.createElement('div');
+            wordCard.className = 'word-card';
+            wordCard.innerHTML = `
+                <img src="${word.image}" class="word-image" alt="${word.english}">
+                <div class="word-text">${word.tajik} (${word.russian})</div>
+                <div class="word-translation">${word.english}</div>
+                <div class="pronunciation">Талаффуз: ${word.pronunciation}</div>
+                <div class="example-sentence">Мисол: ${word.example}</div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="next-word-btn" id="next-word-btn">Make sentences with this</button>
+                </div>
+            `;
+            
+            // Add to messages container
+            addMessage(wordCard, 'received');
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Add event listener to the button
+            setTimeout(() => {
+                document.getElementById('next-word-btn').addEventListener('click', () => {
+                    currentWordIndex++;
+                    showNextWord();
+                });
+            }, 100);
+        }
+        
+        // Add a message to the chat
+        function addMessage(content, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            if (typeof content === 'string') {
+                messageDiv.innerHTML = `
+                    <div>${content}</div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                `;
+            } else {
+                messageDiv.appendChild(content);
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // Get current time in HH:MM format
+        function getCurrentTime() {
+            const now = new Date();
+            return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        }
+        
+        // Send message
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, 'sent');
+                messageInput.value = '';
+                
+                // In a real app, this would send to the server
+                // Here we just simulate a response
+                setTimeout(() => {
+                    addMessage("Good sentence! Now try to use this word in conversation.", 'received');
+                }, 1000);
+            }
+        }
+        
+        // Voice recording functionality
+        async function toggleRecording() {
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        
+                        // Create audio player
+                        const audio = document.createElement('audio');
+                        audio.controls = true;
+                        audio.src = audioUrl;
+                        
+                        // Add to chat
+                        const audioContainer = document.createElement('div');
+                        audioContainer.appendChild(audio);
+                        addMessage(audioContainer, 'sent');
+                        
+                        // Simulate pronunciation feedback
+                        setTimeout(() => {
+                            const isCorrect = Math.random() > 0.5;
+                            if (isCorrect) {
+                                addMessage("Excellent pronunciation! 🎉", 'received');
+                            } else {
+                                const currentWord = vocabulary[currentWordIndex];
+                                addMessage(`Almost! Try again: ${currentWord.pronunciation}`, 'received');
+                            }
+                        }, 1500);
+                    };
+                    
+                    mediaRecorder.start();
+                    isRecording = true;
+                    micBtn.classList.add('recording');
+                } catch (err) {
+                    console.error("Error recording audio:", err);
+                    alert("Имкони сабти овоз дастрас нест. Лутфан иҷозат диҳед.");
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                micBtn.classList.remove('recording');
+                
+                // Stop all tracks in the stream
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+        }
+        
+        // Event listeners
+        loginBtn.addEventListener('click', login);
+        
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+        
+        sendBtn.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        micBtn.addEventListener('click', toggleRecording);
+    </script>
+</body>
+</html>
